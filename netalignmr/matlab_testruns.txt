@@ -1,0 +1,27 @@
+# matlab testruns
+# codes from: https://www.cs.purdue.edu/homes/dgleich/codes/netalign/
+
+a = 1;
+b = 1;
+gamma = 0.4;
+stepm = 25;
+rtype = 1;
+maxiter = 10;
+verbose = 1;
+
+% time: 50 secs
+load('../private_data/lcsh2wiki_full.mat')
+tic;netalignmr(S,w,a,b,li,lj,gamma,stepm,rtype,maxiter,verbose);toc;
+
+% time: 0.24 secs
+load('../private_data/lcsh2wiki-small.mat');w = lw;
+tic;netalignmr(S,w,a,b,li,lj,gamma,stepm,rtype,maxiter,verbose);toc;
+
+% time: 0.018 seconds
+load('../data/example-overlap.mat')
+tic;netalignmr(S,w,a,b,li,lj,gamma,stepm,rtype,maxiter,verbose);toc;
+
+% >> tic;netalignmr(S,w,a,b,li,lj,gamma,stepm,rtype,maxiter,verbose);toc;
+%  best   iter     norm-u     lower   upper     cur      obj  weight    card overlap
+%     *      1    0.0e+00         7       7       7        7       3       5       4
+% Elapsed time is 0.018099 seconds.

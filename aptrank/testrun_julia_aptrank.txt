@@ -1,0 +1,72 @@
+using MatrixNetworks
+============================================================================================================
+# Experiment 1
+mainloc = "/u/subspace_s4/hnassar/CSE17/aptrank/aptrank-master/yeast"
+
+location = join([mainloc,"_H.smat"])
+H = MatrixNetworks.readSMAT(location)
+
+location = join([mainloc,"_R.smat"])
+R = MatrixNetworks.readSMAT(location)
+
+location = join([mainloc,"_G.smat"])
+(rows,header) = readdlm(location;header=true)
+G = sparse(
+           convert(Array{Int64,1},rows[1:parse(Int,header[3]),1])+1,
+           convert(Array{Int64,1},rows[1:parse(Int,header[3]),2])+1,
+           rows[1:parse(Int,header[3]),3],
+           parse(Int,header[1]),
+           parse(Int,header[2])
+           )
+
+include("aptrank_parallel.jl")
+
+rho = 0.5
+Rtrain,Rtest = splitR(R,rho);
+
+lambda = 0.5
+H1 = lambda*H;
+H2 = (1-lambda)*H';
+dH = colnormout(H1) + colnormout(H2);
+K = 8
+S = 5
+t = 0.5
+diffusion_type = 2
+
+@time Xa = aptrank_parallel(G,Rtrain,dH,K,S,t,diffusion_type,"median");
+
+============================================================================================================
+# Experiment 2
+mainloc = "/u/subspace_s4/hnassar/CSE17/aptrank/aptrank-master/human2010"
+
+location = join([mainloc,"_H.smat"])
+H = MatrixNetworks.readSMAT(location)
+
+location = join([mainloc,"_R.smat"])
+R = MatrixNetworks.readSMAT(location)
+
+location = join([mainloc,"_G.smat"])
+(rows,header) = readdlm(location;header=true)
+G = sparse(
+           convert(Array{Int64,1},rows[1:parse(Int,header[3]),1])+1,
+           convert(Array{Int64,1},rows[1:parse(Int,header[3]),2])+1,
+           rows[1:parse(Int,header[3]),3],
+           parse(Int,header[1]),
+           parse(Int,header[2])
+           )
+
+include("aptrank_parallel.jl")
+
+rho = 0.5
+Rtrain,Rtest = splitR(R,rho);
+
+lambda = 0.5
+H1 = lambda*H;
+H2 = (1-lambda)*H';
+dH = colnormout(H1) + colnormout(H2);
+K = 8
+S = 5
+t = 0.5
+diffusion_type = 2
+
+@time Xa = aptrank_parallel(G,Rtrain,dH,K,S,t,diffusion_type,"median");

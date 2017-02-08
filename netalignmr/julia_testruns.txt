@@ -1,0 +1,22 @@
+# julia testruns
+# codes from: github.com/nassarhuda/NetworkAlign.jl
+
+a = 1;
+b = 1;
+gamma = 0.4;
+stepm = 25;
+rtype = 1;
+maxiter = 10;
+verbose = true;
+
+# time: 40 secs
+S,w,li,lj,A,B,L = load_netalign_problem("lcsh2wiki-full");
+tic();xbest,st,status,hist = netalignmr(S,w,a,b,li,lj,gamma,stepm,rtype,maxiter,verbose);toc()
+
+# time: 0.18 secs
+S,w,li,lj,A,B,L = load_netalign_problem("lcsh2wiki-small")
+tic();xbest,st,status,hist = netalignmr(S,w,a,b,li,lj,gamma,stepm,rtype,maxiter,verbose);toc()
+
+# time: 0.003 secs
+S,w,li,lj,A,B,L = load_netalign_problem("example-overlap");
+tic();xbest,st,status,hist = netalignmr(S,w,a,b,li,lj,gamma,stepm,rtype,maxiter,verbose);toc()

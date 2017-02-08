@@ -1,0 +1,74 @@
+% Set up cvx
+% (1) Download cvx from http://cvxr.com/cvx/download/ and unzip the package.
+% (2) Add the cvx path
+addpath('./cvx');
+% (3) Set it up:
+cvx_setup
+% Launch MATLAB parallel computing pool:
+matlabpool('open',12); % Set the number of cores
+% NOTE: If you use MATLAB/R2013b or higher version,
+% please use parpool() instead of matlabpool().
+% e.g., parpool('MyCluster',12);
+% For more information about parpool(),
+% please refer to http://www.mathworks.com/help/distcomp/parpool.html
+============================================================================================
+% Execution:
+load('data/yeast.mat');
+% Split R into Rtrain and Rtest:
+rho = 0.5; % the percentage of annotations used in training.
+[Rtrain,Rtest] = splitR(R,rho);
+% Convert H into bi-directional:
+lambda = 0.5;
+dH = directH(H,lambda);
+addpath('./aptrank')
+K = 8; % Markov chain iterations
+S = 5; % Number of shuffles
+t = 0.5; % Split percentage of Rtrian into Rfit and Reval
+diffusion_type = 'twoway'; % Input either 'oneway' or 'twoway'.
+tic; Xa = aptrank(G,Rtrain,dH,K,S,t,diffusion_type);toc;
+
+mat_to_smat(R,'yeast_R')
+mat_to_smat(G,'yeast_G')
+mat_to_smat(H,'yeast_H')
+
+============================================================================================
+% Execution:
+load('data/human2010.mat')
+% Split R into Rtrain and Rtest:
+rho = 0.5; % the percentage of annotations used in training.
+[Rtrain,Rtest] = splitR(R,rho);
+% Convert H into bi-directional:
+lambda = 0.5;
+dH = directH(H,lambda);
+addpath('./aptrank')
+K = 8; % Markov chain iterations
+S = 5; % Number of shuffles
+t = 0.5; % Split percentage of Rtrian into Rfit and Reval
+diffusion_type = 'twoway'; % Input either 'oneway' or 'twoway'.
+tic; Xa = aptrank(G,Rtrain,dH,K,S,t,diffusion_type);toc;
+
+mat_to_smat(R,'human2010_R')
+mat_to_smat(G,'human2010_G')
+mat_to_smat(H,'human2010_H')
+
+============================================================================================
+% Execution:
+load('data/fly_G11.mat')
+load('data/fly_G12.mat')
+load('data/fly_G21.mat')
+load('data/fly_G22.mat')
+G = [G11,G12;G21,G22];
+load('data/fly_RH.mat')
+
+% Split R into Rtrain and Rtest:
+rho = 0.5; % the percentage of annotations used in training.
+[Rtrain,Rtest] = splitR(R,rho);
+% Convert H into bi-directional:
+lambda = 0.5;
+dH = directH(H,lambda);
+addpath('./aptrank')
+K = 8; % Markov chain iterations
+S = 5; % Number of shuffles
+t = 0.5; % Split percentage of Rtrian into Rfit and Reval
+diffusion_type = 'twoway'; % Input either 'oneway' or 'twoway'.
+tic; Xa = aptrank(G,Rtrain,dH,K,S,t,diffusion_type);toc;
