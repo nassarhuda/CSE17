@@ -1,0 +1,14 @@
+To run the matlab version of aptrank:
+
+First, get the original code:
+Go to https://github.rcac.purdue.edu/mgribsko/aptrank
+and download the repo
+
+Second, refer to the file `testrun_matlab_aptrank.txt` to run the experiments
+
+To run the julia version of aptrank:
+
+The data used is the same data found in https://github.rcac.purdue.edu/mgribsko/aptrank/tree/master/data
+
+We just need to read them into julia via the function mat_to_smat in aptrank-julia
+Then, use the file testrun_julia_aptrank.txt to lead you
